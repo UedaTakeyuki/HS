@@ -1,0 +1,13 @@
+# https://qiita.com/takanemu/items/c2982bfb74c72cbf174d
+[Unit]
+Description=launch chromium-browser
+
+[Service]
+User=pi
+Environment=DISPLAY=:0
+ExecStart=/usr/bin/chromium-browser --kiosk http://klingsor.uedasoft.com/tools/190401/
+#ExecStart=/usr/bin/chromium-browser http://klingsor.uedasoft.com/tools/190401/
+
+[Install]
+WantedBy=user@.service
+
