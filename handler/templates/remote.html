@@ -1,0 +1,43 @@
+<!--
+ * @author Dr. Takeyuki UEDA
+ * @copyright Copyright© Atelier UEDA 2019 - All rights reserved.
+-->
+
+<!-- https://stackoverflow.com/questions/12993835/passing-a-custom-python-function-into-a-tornado-template -->
+{% import pprint %}
+<html>
+  <head>
+    <title>WS Exchange Console SCREEN</title>
+
+  </head>
+  <body>
+    <h1>WS Exchange Console SCREEN</h1>
+
+    <button>{{id}}</button>
+    <p id="result"></p>
+
+    <script>
+      ConnectWS({{id}}, document.getElementById("result"));
+
+      function ConnectWS(id, element) {
+        var url = "ws://" + location.hostname + ":8888/remote_connection/"+id;
+        var sock = new WebSocket(url);
+        // 接続
+        sock.addEventListener('open',function(e){
+          console.log('Socket 接続成功');
+        });
+        // When message 
+        sock.addEventListener('message',function(e){
+          console.log(e.data);
+          element.innerHTML
+            = e.data;
+        });
+        document.querySelector("button").addEventListener("click", function(){
+          let date = new Date();
+          sock.send("Button " + id + " is clicked at " + date.toString());
+        });
+
+      }
+    </script>
+  </body>
+</html>

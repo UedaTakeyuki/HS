@@ -1,5 +1,5 @@
 #-*- coding:utf-8 -*-
-# Copy Right Takeyuki UEDA  © 2018 -
+# Copy Right Takeyuki UEDA  © 2019 -
 
 import tornado.websocket
 import tornado.web
