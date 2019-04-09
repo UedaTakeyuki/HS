@@ -1,6 +1,8 @@
 [Unit]
 Description=root server for collaborative devices
 After=rc-local.service
+Before = hs.browser.service
+
 [Service]
 WorkingDirectory=/home/pi/HS
 ExecStart=/usr/bin/python3 /home/pi/HS/tornado_base.py
@@ -9,5 +11,6 @@ Restart=always
 RestartSec=30
 Type=simple
 PIDFile=/var/run/hs.browser.pid
+
 [Install]
 WantedBy=multi-user.target
