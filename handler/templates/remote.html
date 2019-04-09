@@ -7,17 +7,50 @@
 {% import pprint %}
 <html>
   <head>
-    <title>WS Exchange Console SCREEN</title>
-
+    <meta charset="UTF-8">
+    <meta name="description" content="Base of Vuetify Example">
+    <meta name="viewport" content="width=device-width">
+    <title>Home Station remote</title>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet" type="text/css">
+    <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet" type="text/css"></link>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
   </head>
   <body>
-    <h1>WS Exchange Console SCREEN</h1>
+    <div id="app">
+      <v-app>
 
-    <button>{{id}}</button>
-    <p id="result"></p>
+        <h1>Home Station remote</h1>
+
+        <v-text-field
+         v-model="content_str"
+         label="YouTube content id or url"
+        >
+        </v-text-field>
+        <v-btn @click="submit();">{{id}}</v-btn>
+        <p id="result"></p>
+
+      </v-app>
+    </div>
 
     <script>
-      ConnectWS({{id}}, document.getElementById("result"));
+      var vue = new Vue({
+        el: '#app',
+        data: {
+          sock: "",
+          content_str: ""
+        },
+        methods: {
+          submit(){
+//            this.sock.send("uyHbcHcJ9QQ");
+            this.sock.send(this.content_str);
+          },
+        }
+      })
+    </script>
+    <script>
+
+       vue.sock = ConnectWS({{id}}, document.getElementById("result"));
 
       function ConnectWS(id, element) {
         var url = "ws://" + location.hostname + ":8888/remote_connection/"+id;
@@ -32,10 +65,13 @@
           element.innerHTML
             = e.data;
         });
+/*
         document.querySelector("button").addEventListener("click", function(){
           let date = new Date();
-          sock.send("Button " + id + " is clicked at " + date.toString());
+          sock.send("uyHbcHcJ9QQ");
         });
+*/
+        return sock;
 
       }
     </script>
