@@ -2,3 +2,5 @@
 2019.04.05 tornado_base handler
 2019.04.06 button handler
 2019.04.08 basic structure finish
+
+2019.04.09 remote can send contents
