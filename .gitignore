@@ -1,5 +1,6 @@
 tornado_base
 tornado_base.py
 handler/__pycache__/
+handler/*.pyc
 *.pyc
 handler/*.pyc

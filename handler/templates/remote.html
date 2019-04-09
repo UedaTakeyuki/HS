@@ -34,6 +34,11 @@
     </div>
 
     <script>
+      //-------------------------------------------------------------
+      //
+      // Vue
+      //
+      //-------------------------------------------------------------
       var vue = new Vue({
         el: '#app',
         data: {
@@ -41,15 +46,26 @@
           content_str: ""
         },
         methods: {
-          submit(){
+          submit: function(){
 //            this.sock.send("uyHbcHcJ9QQ");
-            this.sock.send(this.content_str);
+//            this.sock.send(this.content_str);
+            this.sock.send(this.videoId);
+          },
+        },
+        computed: {
+          videoId: function(){
+            // http://q.hatena.ne.jp/1327668301
+            return /[/?=]([-\w]{11})/.exec(this.content_str)[1];
           },
         }
       })
     </script>
     <script>
-
+      //-------------------------------------------------------------
+      //
+      // WS handler
+      //
+      //-------------------------------------------------------------
        vue.sock = ConnectWS({{id}}, document.getElementById("result"));
 
       function ConnectWS(id, element) {
