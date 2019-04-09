@@ -55,7 +55,17 @@
         computed: {
           videoId: function(){
             // http://q.hatena.ne.jp/1327668301
-            return /[/?=]([-\w]{11})/.exec(this.content_str)[1];
+            res = /^([-\w]{11})$/.exec(this.content_str);
+            if (res && res.length == 2){
+              return res[1];
+            } else {
+              res = /[/?=]([-\w]{11})/.exec(this.content_str);
+              if (res && res.length == 2){
+                return res[1];
+              } else {
+                return "";
+              }
+            }
           },
         }
       })
