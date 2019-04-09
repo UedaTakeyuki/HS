@@ -6,7 +6,8 @@ protocol = "ws:"
 
 data_dir = "/etc/letsencrypt/live/.com/"
 additional_module_paths    = ["handler"] 
-tb_handlers    = ["screen", "ws_exchange"]
+#tb_handlers    = ["screen", "ws_exchange"]
+tb_handlers    = ["screen"]
 templates_path = "handler/templates"
 
 log_file_prefix = "/var/log/tornado_base/tb.log"

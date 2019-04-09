@@ -1,28 +1,131 @@
-<!--
- * @author Dr. Takeyuki UEDA
- * @copyright Copyright© Atelier UEDA 2019 - All rights reserved.
--->
-
-<!-- https://stackoverflow.com/questions/12993835/passing-a-custom-python-function-into-a-tornado-template -->
-{% import pprint %}
+<!DOCTYPE html>
 <html>
-  <head>
-    <title>WS Exchange Console SCREEN</title>
-
-  </head>
   <body>
-    <h1>WS Exchange Console SCREEN</h1>
+<!--    <script>document.write("innerHeight = " +window.innerHeight);</script> -->
+<!--    <script>document.write("innerWidth = " +window.innerWidth);</script> -->
+    <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+    {{route}}
+    <div class="container" style="display:flex;">
+      <div id="player"></div>
+      <div id="panel" style="overflow:auto">
+        <div>
+          <button onclick='playYT("lrX6ktLg8WQ");'>
+            <img src="http://i.ytimg.com/vi/lrX6ktLg8WQ/sddefault.jpg" width="64"/>
+            <br>Sky News live<br>
+            lrX6ktLg8WQ
+          </button>
+        </div>
+        <div>
+          <button onclick='playYT("5avbHxRppxo");'>
+            <img src="http://i.ytimg.com/vi/5avbHxRppxo/sddefault.jpg" width="64"/>
+            <br>Euronews English Live<br>
+            5avbHxRppxo
+          </button>
+        </div>
+        <div>
+          <button onclick='playYT("a-M_5rGhPdg");'>
+            <img src="http://i.ytimg.com/vi/a-M_5rGhPdg/sddefault.jpg" width="64"/>
+            <br>FRANCE 24 en Direct<br>
+            a-M_5rGhPdg
+          </button>
+        </div>
+        <div>
+          <button onclick='playYT("rWFTvniIDUs");'>
+            <img src="http://i.ytimg.com/vi/rWFTvniIDUs/sddefault.jpg" width="64"/>
+            <br>Africa24 Live<br>
+            rWFTvniIDUs
+          </button>
+        </div>
+      </div>
+    </div>
+    <h1 id="clock"></h1>
 
-    <p id="connection_1"></p>
-    <p id="connection_2"></p>
-    <p id="connection_3"></p>
-
+    <script src="https://www.youtube.com/iframe_api">
+      // https://stackoverflow.com/questions/16050024/youtube-iframe-api-fails-to-post-message
+    </script>
     <script>
-      ConnectWS(1, document.getElementById("connection_1"));
-      ConnectWS(2, document.getElementById("connection_2"));
-      ConnectWS(3, document.getElementById("connection_3"));
+      //-------------------------------------------------------------
+      //
+      // YouTube iframe API
+      //
+      //-------------------------------------------------------------
 
-      function ConnectWS(id, element) {
+      // 2. This code loads the IFrame Player API code asynchronously.
+      var tag = document.createElement('script');
+      tag.src = "https://www.youtube.com/iframe_api";
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+      // 3. This function creates an <iframe> (and YouTube player)
+      //    after the API code downloads.
+      var player;
+      function onYouTubeIframeAPIReady() {
+        let height = window.innerHeight - 100;
+        let width  = height * 16 / 9;
+        // https://crieit.net/boards/qa-css/80429a6922a9d574810aaa2ae58abab2
+        document.querySelector('.container').style.height = height + 'px';
+        player = new YT.Player('player', {
+          height: height,
+          width:  width,
+          videoId: 'lrX6ktLg8WQ',
+          events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+          }
+        });
+      }
+      // 4. The API will call this function when the video player is ready.
+      function onPlayerReady(event) {
+        event.target.setVolume(100);
+        event.target.playVideo();
+      }
+      // 5. The API calls this function when the player's state changes.
+      //    The function indicates that when playing a video (state=1),
+      //    the player should play for six seconds and then stop.
+      var done = false;
+      function onPlayerStateChange(event) {
+//        if (event.data == YT.PlayerState.PLAYING && !done) {
+//          setTimeout(stopVideo, 6000);
+//          done = true;
+//        }
+      }
+/*
+      function stopVideo() {
+        player.stopVideo();
+      }
+*/
+      function playYT(v_id) {
+        // https://stackoverflow.com/questions/13180540/how-to-dynamically-change-youtube-player-videoid
+        player.loadVideoById(v_id);
+      }
+    </script>
+    <script>
+      //-------------------------------------------------------------
+      //
+      // Clock handler
+      //
+      //-------------------------------------------------------------
+      var clock = document.getElementById("clock");
+      function clockwork() {
+        time = new Date();
+        clock.innerHTML = time.getFullYear()+"/"
+                          +(time.getMonth()+1)+"/"
+                          +time.getDate()+" "
+                          +("0" + time.getHours()).slice(-2)+":"
+                          +("0" + time.getMinutes()).slice(-2)+":"
+                          +("0" + time.getSeconds()).slice(-2);
+        setTimeout(clockwork, 100);
+      }
+      clockwork();
+    </script>
+    <script>
+      //-------------------------------------------------------------
+      //
+      // WS handler
+      //
+      //-------------------------------------------------------------
+      ConnectWS(1);
+
+      function ConnectWS(id) {
         var url = "ws://" + location.hostname + ":8888/screen_connection/" + id;
         var sock = new WebSocket(url);
         // 接続
@@ -32,12 +135,16 @@
         // When message 
         sock.addEventListener('message',function(e){
           console.log(e.data);
-          element.innerHTML
-            = e.data;
+          //element.innerHTML = e.data;
+          HandleCommand(e.data);
           let date = new Date();
           sock.send("Click of button " + id +" is accepted by the SCREEN at " + date.toString());
         });
       }
+      function HandleCommand(command_str){
+        console.log(command_str);
+      }
     </script>
+
   </body>
 </html>
