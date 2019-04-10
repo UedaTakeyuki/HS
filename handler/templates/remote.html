@@ -76,7 +76,7 @@
       // WS handler
       //
       //-------------------------------------------------------------
-       vue.sock = ConnectWS({{id}}, document.getElementById("result"));
+      vue.sock = ConnectWS({{id}}, document.getElementById("result"));
 
       function ConnectWS(id, element) {
         var url = "ws://" + location.hostname + ":8888/remote_connection/"+id;
@@ -90,6 +90,11 @@
           console.log(e.data);
           element.innerHTML
             = e.data;
+        });
+        // When close 
+        sock.addEventListener('close',function(e){
+          console.log('Socket closed.');
+          vue.sock = ConnectWS({{id}}, document.getElementById("result"));
         });
 /*
         document.querySelector("button").addEventListener("click", function(){

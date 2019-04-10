@@ -149,7 +149,7 @@
         var sock = new WebSocket(url);
         // 接続
         sock.addEventListener('open',function(e){
-          console.log('Socket 接続成功');
+          console.log('Socket opened.');
         });
         // When message 
         sock.addEventListener('message',function(e){
@@ -158,6 +158,11 @@
           HandleCommand(e.data);
           let date = new Date();
           sock.send("Click of button " + id +" is accepted by the SCREEN at " + date.toString());
+        });
+        // When close 
+        sock.addEventListener('close',function(e){
+          console.log('Socket closed.');
+          ConnectWS(1);
         });
       }
       function HandleCommand(command_str){
