@@ -43,7 +43,19 @@
         </div>
       </div>
     </div>
-    <h1 id="clock" style="font-size: 36px;"></h1>
+    <p id="clock" style="font-size: 42px;
+    /* https://stackoverflow.com/questions/3820325/overlay-opaque-div-over-youtube-iframe */
+    position:fixed;
+    bottom:0;
+    left:10;
+    background:#000;
+    opacity:0.7;
+    /*background:rgba(255,255,255,0.8); or just this*/
+    z-index:50;
+    color:#fff;
+
+    padding-left:10px;
+    padding-right:10px;"></p>
 
     <script src="https://www.youtube.com/iframe_api">
       // https://stackoverflow.com/questions/16050024/youtube-iframe-api-fails-to-post-message
@@ -64,7 +76,8 @@
       //    after the API code downloads.
       var player;
       function onYouTubeIframeAPIReady() {
-        let height = window.innerHeight - 100;
+//        let height = window.innerHeight - 100;
+        let height = window.innerHeight;
         let width  = height * 16 / 9;
         // https://crieit.net/boards/qa-css/80429a6922a9d574810aaa2ae58abab2
         document.querySelector('.container').style.height = height + 'px';
@@ -112,9 +125,9 @@
       var clock = document.getElementById("clock");
       function clockwork() {
         time = new Date();
-        clock.innerHTML = time.getFullYear()+"/"
-                          +(time.getMonth()+1)+"/"
-                          +time.getDate()+" "
+        clock.innerHTML = //time.getFullYear()+"/"
+                          //+(time.getMonth()+1)+"/"
+                          //+time.getDate()+" "
                           +("0" + time.getHours()).slice(-2)+":"
                           +("0" + time.getMinutes()).slice(-2)+":"
                           +("0" + time.getSeconds()).slice(-2);
