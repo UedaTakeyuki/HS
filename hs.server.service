@@ -5,7 +5,7 @@ Before = hs.browser.service
 
 [Service]
 WorkingDirectory=/home/pi/HS
-ExecStart=/usr/bin/python3 /home/pi/HS/tornado_base.py
+ExecStart=/home/pi/HS/homeserver.bin
 Restart=always
 #RestartSec=90
 RestartSec=30

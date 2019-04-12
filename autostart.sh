@@ -32,7 +32,8 @@ on(){
 	sudo systemctl start ${CMD}.service
 	# CMD2
 	sed -i "s@^WorkingDirectory=.*@WorkingDirectory=${SCRIPT_DIR}@" ${CMD2}.service
-	sed -i "s@^ExecStart=.*@ExecStart=/usr/bin/python3 ${SCRIPT_DIR}/tornado_base.py@" ${CMD2}.service
+#	sed -i "s@^ExecStart=.*@ExecStart=/usr/bin/python3 ${SCRIPT_DIR}/tornado_base.py@" ${CMD2}.service
+	sed -i "s@^ExecStart=.*@ExecStart=${SCRIPT_DIR}/homeserver.bin@" ${CMD2}.service
 	sed -i "s@^PIDFile=.*@PIDFile=/var/run/${CMD}.pid@" ${CMD2}.service
 	sudo ln -s ${SCRIPT_DIR}\/${CMD2}.service /etc/systemd/system/${CMD2}.service
 	sudo systemctl daemon-reload
